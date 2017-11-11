@@ -77,7 +77,8 @@ class Tebakkode_m extends CI_Model {
   }
 
   function getQuran() {
-    $data = $this->db->get('qurans')->row_array();
+    $data = $this->db->where('id', 75124)
+    ->get('qurans')->row_array();
     if(count($data) > 0) return $data;
     return false;
   }
