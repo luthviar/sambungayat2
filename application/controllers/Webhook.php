@@ -115,9 +115,9 @@ class Webhook extends CI_Controller {
          $question = $this->tebakkode_m->getQuran();
 
          $textMessageBuilder = new TextMessageBuilder($question);
-         
+
          // send message
-         $response = $this->bot->replyMessage($replyToken, $textMessageBuilder);
+         $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
       } else {
         $message = 'Silakan kirim pesan "MULAI" untuk memulai kuis.';
         $textMessageBuilder = new TextMessageBuilder($message);
