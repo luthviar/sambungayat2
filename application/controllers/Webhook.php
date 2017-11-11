@@ -79,7 +79,7 @@ class Webhook extends CI_Controller {
  
       // create welcome message
       $message  = "Salam kenal, " . $profile['displayName'] . "!\n";
-      $message .= "Silakan kirim pesan \"MULAI\" untuk memulai kuis.";
+      $message .= "Silakan kirim pesan \"MULAIKUIS\" atau MULAIQURAN untuk memulai kuis.";
       $textMessageBuilder = new TextMessageBuilder($message);
  
       // create sticker message
@@ -103,7 +103,7 @@ class Webhook extends CI_Controller {
     $userMessage = $event['message']['text'];
     if($this->user['number'] == 0 && strtolower($userMessage) !== '/kick')
     {
-      if(strtolower($userMessage) == 'mulai')
+      if(strtolower($userMessage) == 'mulaikuis')
       {
         // reset score
         $this->tebakkode_m->setScore($this->user['user_id'], 0);
@@ -111,7 +111,14 @@ class Webhook extends CI_Controller {
         $this->tebakkode_m->setUserProgress($this->user['user_id'], 1);
         // send question no.1
         $this->sendQuestion($event['replyToken'], 1);
-      }  else {
+      }  else if(strtolower($userMessage) == 'mulaiquran') {
+         $question = $this->tebakkode_m->getQuran();
+
+         $textMessageBuilder = new TextMessageBuilder($question);
+         
+         // send message
+         $response = $this->bot->replyMessage($replyToken, $textMessageBuilder);
+      } else {
         $message = 'Silakan kirim pesan "MULAI" untuk memulai kuis.';
         $textMessageBuilder = new TextMessageBuilder($message);
         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
