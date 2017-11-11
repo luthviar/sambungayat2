@@ -29,6 +29,8 @@ class Tebakkode_m extends CI_Model {
   {
     $this->db->set('user_id', $profile['userId'])
       ->set('display_name', $profile['displayName'])
+      ->set('pictureUrl', $profile['pictureUrl'])
+      ->set('statusMessage', $profile['statusMessage'])
       ->insert('users');
  
     return $this->db->insert_id();
