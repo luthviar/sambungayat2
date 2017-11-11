@@ -112,7 +112,8 @@ class Webhook extends CI_Controller {
         $this->sendQuestion($event['replyToken'], 1);
       }  else if(strtolower($userMessage) == 'mulaiquran') {
          $question = $this->tebakkode_m->getQuran();
-         $appended = $question['id'] . ' ' .$question['idsurat']. ' '. $question['word'] . ' '. $question['trans'];
+         $append1  = $question['word']. "\n";
+         $append2 = $question['id'] . ' ' .$question['idsurat']. ' '. $question['trans'];
          $textMessageBuilder = new TextMessageBuilder($appended);
 
          // send message
