@@ -112,9 +112,9 @@ class Webhook extends CI_Controller {
         $this->sendQuestion($event['replyToken'], 1);
       }  else if(strtolower($userMessage) == 'mulaiquran') {
          $question = $this->tebakkode_m->getQuran();
-         $append1  = $question['word']. "\n";
-         $append2 = $question['id'] . ' ' .$question['idsurat']. ' '. $question['trans'];
-         $textMessageBuilder = new TextMessageBuilder($appended);
+         $append  = $question['word']. "\n";
+         $append .= $question['id'] . ' ' .$question['idsurat']. ' '. $question['trans'];
+         $textMessageBuilder = new TextMessageBuilder($append);
 
          // send message
          $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
