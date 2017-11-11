@@ -103,8 +103,7 @@ class Webhook extends CI_Controller {
     $userMessage = $event['message']['text'];
     if($this->user['number'] == 0 && strtolower($userMessage) !== '/kick')
     {
-      if(strtolower($userMessage) == 'mulaikuis')
-      {
+      if(strtolower($userMessage) == 'mulaikuis') {
         // reset score
         $this->tebakkode_m->setScore($this->user['user_id'], 0);
         // update number progress
@@ -113,8 +112,8 @@ class Webhook extends CI_Controller {
         $this->sendQuestion($event['replyToken'], 1);
       }  else if(strtolower($userMessage) == 'mulaiquran') {
          $question = $this->tebakkode_m->getQuran();
-
-         $textMessageBuilder = new TextMessageBuilder($question);
+         $appended = $question['id'] . ' ' .$question['idsurat']. ' '. $question['word'] . ' '. $question['trans'];
+         $textMessageBuilder = new TextMessageBuilder($appended);
 
          // send message
          $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
