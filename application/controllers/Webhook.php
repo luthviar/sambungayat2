@@ -111,6 +111,16 @@ class Webhook extends CI_Controller {
         $this->tebakkode_m->setUserProgress($this->user['user_id'], 1);
         // send question no.1
         $this->sendQuestion($event['replyToken'], 1);
+      } else if(strtolower($userMessage) == '/kick') {
+          if ($event['source']['type'] == 'room') {
+            $this->bot->leaveRoom($event['source']['roomId']);
+          } else if($event['source']['type'] == 'group') {
+            $this->bot->leaveGroup($event['source']['groupId']);
+          } else if($event['source']['type'] == 'user') {
+            $message = 'Maaf Anda tidak bisa melakukan perintah kick';
+            $textMessageBuilder = new TextMessageBuilder($message);
+            $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+          }
       } else {
         $message = 'Silakan kirim pesan "MULAI" untuk memulai kuis.';
         $textMessageBuilder = new TextMessageBuilder($message);
@@ -204,5 +214,5 @@ class Webhook extends CI_Controller {
       $this->tebakkode_m->setUserProgress($this->user['user_id'], 0);
     }
   }
-  
+
 }
