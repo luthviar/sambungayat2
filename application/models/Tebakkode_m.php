@@ -18,9 +18,21 @@ class Tebakkode_m extends CI_Model {
   }
 
   // Users
-  function getUser($userId){}
-
-  function saveUser($profile){}
+  function getUser($userId)
+  {
+    $data = $this->db->where('user_id', $userId)->get('users')->row_array();
+    if(count($data) > 0) return $data;
+    return false;
+  }
+ 
+  function saveUser($profile)
+  {
+    $this->db->set('user_id', $profile['userId'])
+      ->set('display_name', $profile['displayName'])
+      ->insert('users');
+ 
+    return $this->db->insert_id();
+  }
 
   // Question
   function getQuestion($questionNum){}
