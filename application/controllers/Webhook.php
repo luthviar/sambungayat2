@@ -116,6 +116,28 @@ class Webhook extends CI_Controller {
          $append .= $question['id'] . ' ' .$question['idsurat']. ' '. $question['trans'];
          $textMessageBuilder = new TextMessageBuilder($append);
 
+        
+            
+             $firstId = 75124;
+             $nextId = 75125;
+            
+          while($this->tebakkode_m->getSurat($firstId)->id == $this->tebakkode_m->getNextSurat($nextId)->id ) {
+           $i=1;
+
+           $this->tebakkode_m->saveRowLabel($i, $firstId);
+            if ($nextId == 77431) {
+              break;
+            } else if ($this->tebakkode_m->getSurat($firstId)->id !== $this->tebakkode_m->getNextSurat($nextId)->id ) {
+              $i=1;
+            }
+            
+           $firstId++;
+           $nextId++;
+           $i++;
+         }
+             
+         
+
          // send message
          $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
       } else {
@@ -138,6 +160,7 @@ class Webhook extends CI_Controller {
       $this->checkAnswer($userMessage, $event['replyToken']);
     }
   }
+
 
  private function stickerMessage($event)
   {
