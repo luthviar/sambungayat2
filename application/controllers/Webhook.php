@@ -101,7 +101,7 @@ class Webhook extends CI_Controller {
   private function textMessage($event)
   {
     $userMessage = $event['message']['text'];
-    if($this->user['number'] == 0)
+    if($this->user['number'] == 0 && strtolower($userMessage) !== '/kick')
     {
       if(strtolower($userMessage) == 'mulai')
       {
@@ -116,7 +116,6 @@ class Webhook extends CI_Controller {
         $textMessageBuilder = new TextMessageBuilder($message);
         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
       }
- 
     // if user already begin test
     } else if(strtolower($userMessage) == '/kick') {
           if ($event['source']['type'] == 'room') {
