@@ -114,7 +114,7 @@ class Webhook extends CI_Controller {
          $question = $this->tebakkode_m->getQuran();
          $append  = $question['word']. "\n";
          $append .= $question['id'] . ' ' .$question['no_surat']. ' '. $question['trans'];
-         $textMessageBuilder = new TextMessageBuilder($append);
+         
 
         
             
@@ -125,19 +125,22 @@ class Webhook extends CI_Controller {
            $i=1;
 
            $this->tebakkode_m->saveRowLabel($i, $firstId);
+           $firstId += 1;
+           $nextId += 1;
+           $i += 1;
+            $append .= $i;
             if ($nextId == 77431) {
               break;
             } else if ($this->tebakkode_m->getSurat($firstId)['no_surat'] !== $this->tebakkode_m->getNextSurat($nextId)['no_surat'] ) {
               $i=1;
+              $append .= $i;
             }
             
-           $firstId++;
-           $nextId++;
-           $i++;
+           
          }
              
          
-
+         $textMessageBuilder = new TextMessageBuilder($append);
          // send message
          $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
       } else {
