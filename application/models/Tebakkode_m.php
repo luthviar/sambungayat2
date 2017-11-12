@@ -87,7 +87,7 @@ class Tebakkode_m extends CI_Model {
   {
     $this->db->set('rowlabel', $id_rowlabel)
       ->where('id', $id_quran)
-      ->update('users');
+      ->update('qurans');
  
     return $this->db->insert_id();
   }

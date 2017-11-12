@@ -113,7 +113,7 @@ class Webhook extends CI_Controller {
       }  else if(strtolower($userMessage) == 'mulaiquran') {
          $question = $this->tebakkode_m->getQuran();
          $append  = $question['word']. "\n";
-         $append .= $question['id'] . ' ' .$question['idsurat']. ' '. $question['trans'];
+         $append .= $question['id'] . ' ' .$question['no_surat']. ' '. $question['trans'];
          $textMessageBuilder = new TextMessageBuilder($append);
 
         
@@ -121,7 +121,7 @@ class Webhook extends CI_Controller {
              $firstId = 75124;
              $nextId = 75125;
             
-          while($this->tebakkode_m->getSurat($firstId)->id == $this->tebakkode_m->getNextSurat($nextId)->id ) {
+          while($this->tebakkode_m->getSurat($firstId)['id'] == $this->tebakkode_m->getNextSurat($nextId)['id'] ) {
            $i=1;
 
            $this->tebakkode_m->saveRowLabel($i, $firstId);
