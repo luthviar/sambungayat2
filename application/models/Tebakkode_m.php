@@ -89,7 +89,7 @@ class Tebakkode_m extends CI_Model {
       ->where('id', $id_quran)
       ->update('qurans');
  
-    return $this->db->insert_id();
+    return $this->db->affected_rows();
   }
 
   function getSurat($id_quran)
