@@ -127,7 +127,7 @@ class Webhook extends CI_Controller {
            $this->tebakkode_m->saveRowLabel($i, $firstId);
             if ($nextId == 77431) {
               break;
-            } else if ($this->tebakkode_m->getSurat($firstId)->id !== $this->tebakkode_m->getNextSurat($nextId)->id ) {
+            } else if ($this->tebakkode_m->getSurat($firstId)['no_surat'] !== $this->tebakkode_m->getNextSurat($nextId)['no_surat'] ) {
               $i=1;
             }
             
