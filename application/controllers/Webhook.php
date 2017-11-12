@@ -114,25 +114,25 @@ class Webhook extends CI_Controller {
          $question = $this->tebakkode_m->getQuran();
          $append  = $question['word']. "\n";
          $append .= $question['id'] . ' ' .$question['no_surat']. ' '. $question['trans'];
-         
+         $textMessageBuilder = new TextMessageBuilder($append);
 
-        
-            
              $firstId = 75124;
              $nextId = 75125;
-            
-        
 
             $i=1;
           while($nextId !== 77431) {
            
 
-           $this->tebakkode_m->saveRowLabel($i, $firstId);
+           // $this->tebakkode_m->saveRowLabel($i, $firstId);
            $i += 1;
             
             if ($nextId == 77431) {
               break;
             } else if ($this->tebakkode_m->getSurat($firstId)['no_surat'] !== $this->tebakkode_m->getNextSurat($nextId)['no_surat'] ) {
+              
+              $banyak_ayat = $this->tebakkode_m->getSurat($firstId)['ayat_surat'];
+              $no_surat = $this->tebakkode_m->getSurat($firstId)['no_surat'];
+              $this->tebakkode_m->saveInfoSurat($i, $banyak_ayat, $no_surat);
               $i=1;
              
             }
@@ -143,7 +143,7 @@ class Webhook extends CI_Controller {
          }
              
          
-         $textMessageBuilder = new TextMessageBuilder($append);
+         
          // send message
          $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
       } else {
@@ -205,6 +205,32 @@ class Webhook extends CI_Controller {
  
     // send message
     $response = $this->bot->replyMessage($replyToken, $messageBuilder);
+  }
+
+  public function insert()
+  {
+       $firstId = 75124;
+       $nextId = 75125;
+
+      $i=1;
+    while($nextId !== 77431) {
+     
+
+     // $this->tebakkode_m->saveRowLabel($i, $firstId);
+     $i += 1;
+      
+      if ($nextId == 77431) {
+        break;
+      } else if ($this->tebakkode_m->getSurat($firstId)['no_surat'] !== $this->tebakkode_m->getNextSurat($nextId)['no_surat'] ) {
+        $this->tebakkode_m->saveRowLabel($i, $firstId);
+        $i=1;
+       
+      }
+      
+     $firstId += 1;
+     $nextId += 1;
+     
+   }
   }
 
    private function checkAnswer($message, $replyToken)

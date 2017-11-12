@@ -46,6 +46,33 @@ class Tebakkode_m extends CI_Model {
     if(count($data)>0) return $data;
     return false;
   }
+
+  function getQuestQuran($questQuranNum)
+  {
+    $data = $this->db->where('number', $questQuranNum)
+      ->get('questions')
+      ->row_array();
+ 
+    if(count($data)>0) return $data;
+    return false;
+  }
+
+  function getMaxRow()
+  {
+    $data = $this->db->order_by('rowlabel', 'DESC')->limit(1)->row_array();
+    if(count($data)>0) return $data;
+    return false;
+  }
+
+  function randomQuran($surat, $rowlabel) {
+    $data = $this->db->where('no_surat', $surat)
+      ->where('rowlabel', $rowlabel)
+      ->get('questions')
+      ->row_array();
+ 
+    if(count($data)>0) return $data;
+    return false;
+  }
  
   function isAnswerEqual($number, $answer)
   {
@@ -91,6 +118,17 @@ class Tebakkode_m extends CI_Model {
  
     return $this->db->affected_rows();
   }
+  
+  function saveInfoSurat($rowlabel, $banyak_ayat, $no_surat)
+  {
+    $this->db->set('surat_ke', $no_surat)
+    ->set('banyak_ayat', $banyak_ayat)
+    ->set('max_rowlabel', $rowlabel)
+    ->insert('info_surat');
+
+    return $this->db->insert_id();
+  }
+  
 
   function getSurat($id_quran)
   {
