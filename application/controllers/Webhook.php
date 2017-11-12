@@ -122,15 +122,13 @@ class Webhook extends CI_Controller {
              $nextId = 75125;
             
         
-
+             $count =1;
             $i=1;
-          while($nextId !== 77431) {
+          while($count <== 2308) {
            
 
            $this->tebakkode_m->saveRowLabel($i, $firstId);
-           $firstId += 1;
-           $nextId += 1;
-           $i += 1;
+           
             
             if ($nextId == 77431) {
               break;
@@ -138,8 +136,10 @@ class Webhook extends CI_Controller {
               $i=1;
              
             }
-            
-           
+            $firstId += 1;
+           $nextId += 1;
+           $i += 1;
+           $count++;
          }
              
          
