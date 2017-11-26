@@ -144,7 +144,7 @@ class Webhook extends CI_Controller {
             $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
           }
     } else {
-      $this->checkAnswer($userMessage, $event['replyToken']);
+      // $this->checkAnswer($userMessage, $event['replyToken']);
     }
   }
 
