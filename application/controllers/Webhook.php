@@ -101,7 +101,8 @@ class Webhook extends CI_Controller {
   private function textMessage($event)
   {
     $userMessage = $event['message']['text'];
-    if($this->user['number'] == 0 && strtolower($userMessage) !== '/kick')
+    // if($this->user['number'] == 0 && strtolower($userMessage) !== '/kick')
+    if(strtolower($userMessage) !== '/kick')
     {
       if(strtolower($userMessage) == 'mulaikuis') {
         // reset score
