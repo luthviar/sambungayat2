@@ -200,25 +200,26 @@ class Webhook extends CI_Controller {
       $quranQuest = $this->tebakkode_m->getQuranQuest($start_ayat, $start_rowlabel);
       // $quranQuest['word'];
 
+      $textMessageBuilder = new TextMessageBuilder($quranQuest['word']);
    
-      // prepare answer options
-      for($opsi = "a"; $opsi <= "d"; $opsi++) {       
-              $options[] = new MessageTemplateActionBuilder($quranQuest[++$start_rowlabel], $start_rowlabel);
-      }
+    //   // prepare answer options
+    //   for($opsi = "a"; $opsi <= "d"; $opsi++) {       
+    //           $options[] = new MessageTemplateActionBuilder($quranQuest[++$start_rowlabel], $start_rowlabel);
+    //   }
    
-      // prepare button template
-      $buttonTemplate = new ButtonTemplateBuilder($question['number']."/10", $quranQuest['word'], $options);
+    //   // prepare button template
+    //   $buttonTemplate = new ButtonTemplateBuilder($question['number']."/10", $quranQuest['word'], $options);
    
-      // build message
-      $messageBuilder = new TemplateMessageBuilder("Gunakan mobile app untuk melihat soal", $buttonTemplate);
+    //   // build message
+    //   $messageBuilder = new TemplateMessageBuilder("Gunakan mobile app untuk melihat soal", $buttonTemplate);
    
-      // send message
-      $response = $this->bot->replyMessage($replyToken, $messageBuilder);
+    //   // send message
+    //   $response = $this->bot->replyMessage($replyToken, $messageBuilder);
 
-    } else {
-      // create text message
-      $message = 'Maaf inputan harus 78 hingga 114 (berupa angka saja)';
-      $textMessageBuilder = new TextMessageBuilder($message);
+    // } else {
+    //   // create text message
+    //   $message = 'Maaf inputan harus 78 hingga 114 (berupa angka saja)';
+      // $textMessageBuilder = new TextMessageBuilder($message);
 
       // send message
       $response = $this->bot->replyMessage($replyToken, $textMessageBuilder);
