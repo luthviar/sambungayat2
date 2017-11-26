@@ -121,7 +121,7 @@ class Webhook extends CI_Controller {
         // update number progress
         $this->tebakkode_m->setUserProgress($this->user['user_id'], 1);
         // send question no.1
-        $this->sendQuranQuest($event['replyToken'], 1, $userMessage); 
+        $this->sendQuranQuest($event['replyToken'], 1, 78); 
              
          
          
