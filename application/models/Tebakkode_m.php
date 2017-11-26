@@ -140,9 +140,41 @@ class Tebakkode_m extends CI_Model {
     return false;
   }
 
+  function getSuratKe($no_surat)
+  {
+    $data = $this->db->where('no_surat', $no_surat)
+      ->get('info_surat')
+      ->row_array();
+ 
+    if(count($data)>0) return $data;
+    return false;
+  }
+
   function getNextSurat($id_quran)
   {
     $data = $this->db->where('id', $id_quran)
+      ->get('qurans')
+      ->row_array();
+ 
+    if(count($data)>0) return $data;
+    return false;
+  }
+
+  function getInfoSurat($no_surat)
+  {
+    $data = $this->db->where('no_surat', $no_surat)
+      ->get('qurans')
+      ->order_by('no_surat','DESC')
+      ->row_array();
+ 
+    if(count($data)>0) return $data;
+    return false;
+  }
+
+  function getQuranQuest($start_ayat, $start_rowlabel)
+  {
+    $data = $this->db->where('no_surat', $start_ayat)
+      ->where('rowlabel', $start_rowlabel)
       ->get('qurans')
       ->row_array();
  

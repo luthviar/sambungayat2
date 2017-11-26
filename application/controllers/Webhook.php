@@ -111,41 +111,22 @@ class Webhook extends CI_Controller {
         // send question no.1
         $this->sendQuestion($event['replyToken'], 1);
       }  else if(strtolower($userMessage) == 'mulaiquran') {
-         $question = $this->tebakkode_m->getQuran();
-         $append  = $question['word']. "\n";
-         $append .= $question['id'] . ' ' .$question['no_surat']. ' '. $question['trans'];
-         $textMessageBuilder = new TextMessageBuilder($append);
+         // $question = $this->tebakkode_m->getQuran();
+         // $append  = $question['word']. "\n";
+         // $append .= $question['id'] . ' ' .$question['no_surat']. ' '. $question['trans'];
+         // $textMessageBuilder = new TextMessageBuilder($append);
 
-             $firstId = 75124;
-             $nextId = 75125;
-
-            $i=1;
-          while($nextId !== 77431) {
-           
-
-           // $this->tebakkode_m->saveRowLabel($i, $firstId);
-           $i += 1;
-            
-            if ($nextId == 77431) {
-              break;
-            } else if ($this->tebakkode_m->getSurat($firstId)['no_surat'] !== $this->tebakkode_m->getNextSurat($nextId)['no_surat'] ) {
-              
-              $banyak_ayat = $this->tebakkode_m->getSurat($firstId)['ayat_surat'];
-              $no_surat = $this->tebakkode_m->getSurat($firstId)['no_surat'];
-              $this->tebakkode_m->saveInfoSurat($i, $banyak_ayat, $no_surat);
-              $i=1;
-             
-            }
-            
-           $firstId += 1;
-           $nextId += 1;
-           
-         }
+        // reset score
+        $this->tebakkode_m->setScore($this->user['user_id'], 0);
+        // update number progress
+        $this->tebakkode_m->setUserProgress($this->user['user_id'], 1);
+        // send question no.1
+        $this->sendQuranQuest($event['replyToken'], 1, $userMessage); 
              
          
          
-         // send message
-         $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+         // // send message
+         // $response = $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
       } else {
         $message = 'Silakan kirim pesan "MULAI" untuk memulai kuis.';
         $textMessageBuilder = new TextMessageBuilder($message);
@@ -205,6 +186,74 @@ class Webhook extends CI_Controller {
  
     // send message
     $response = $this->bot->replyMessage($replyToken, $messageBuilder);
+  }
+
+  public function sendQuranQuest($replyToken, $questionNum=1, $userMessage)
+  {
+    if ($userMessage >= 78 && $userMessage <= 114 && is_numeric($userMessage)) {
+      
+      // get question from database
+      $info_surat = $this->tebakkode_m->getInfoSurat($userMessage);
+      $start_ayat = random(1,$info_surat['ayat_surat']);
+      $start_rowlabel = random(1,$info_surat['rowlabel']-5);
+      
+      $quranQuest = $this->tebakkode_m->getQuranQuest($start_ayat, $start_rowlabel);
+      // $quranQuest['word'];
+
+   
+      // prepare answer options
+      for($opsi = "a"; $opsi <= "d"; $opsi++) {       
+              $options[] = new MessageTemplateActionBuilder($quranQuest[++$start_rowlabel], $start_rowlabel);
+      }
+   
+      // prepare button template
+      $buttonTemplate = new ButtonTemplateBuilder($question['number']."/10", $quranQuest['word'], $options);
+   
+      // build message
+      $messageBuilder = new TemplateMessageBuilder("Gunakan mobile app untuk melihat soal", $buttonTemplate);
+   
+      // send message
+      $response = $this->bot->replyMessage($replyToken, $messageBuilder);
+
+    } else {
+      // create text message
+      $message = 'Maaf inputan harus 78 hingga 114 (berupa angka saja)';
+      $textMessageBuilder = new TextMessageBuilder($message);
+
+      // send message
+      $response = $this->bot->replyMessage($replyToken, $textMessageBuilder);
+    }
+    
+  }
+
+  public function insert_info_surat()
+  {
+
+   $firstId = 75124;
+   $nextId = 75125;
+
+  $i=1;
+while($nextId !== 77431) {
+ 
+
+ // $this->tebakkode_m->saveRowLabel($i, $firstId);
+ $i += 1;
+  
+  if ($nextId == 77431) {
+    break;
+  } else if ($this->tebakkode_m->getSurat($firstId)['no_surat'] !== $this->tebakkode_m->getNextSurat($nextId)['no_surat'] ) {
+    
+    $banyak_ayat = $this->tebakkode_m->getSurat($firstId)['ayat_surat'];
+    $no_surat = $this->tebakkode_m->getSurat($firstId)['no_surat'];
+    $this->tebakkode_m->saveInfoSurat($i, $banyak_ayat, $no_surat);
+    $i=1;
+   
+  }
+  
+ $firstId += 1;
+ $nextId += 1;
+ 
+}
   }
 
   public function insert()
