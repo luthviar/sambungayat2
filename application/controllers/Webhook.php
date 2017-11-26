@@ -117,9 +117,9 @@ class Webhook extends CI_Controller {
          // $textMessageBuilder = new TextMessageBuilder($append);
 
         // reset score
-        $this->tebakkode_m->setScore($this->user['user_id'], 0);
+        // $this->tebakkode_m->setScore($this->user['user_id'], 0);
         // update number progress
-        $this->tebakkode_m->setUserProgress($this->user['user_id'], 1);
+        // $this->tebakkode_m->setUserProgress($this->user['user_id'], 1);
         // send question no.1
         $this->sendQuranQuest($event['replyToken'], 1, 78); 
              
